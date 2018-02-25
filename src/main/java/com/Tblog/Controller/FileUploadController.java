@@ -89,13 +89,6 @@ public class FileUploadController {
 		// 保存上传图片
 		if (file != null && !file.isEmpty()) {
 			String filename = newUser.getId() + ".jpg";
-			  //检验目录是否存在
-			  File root = new File(ROOT);
-			  //判断文件夹是否存在,如果不存在则创建文件夹
-			  if (!root.exists()) {
-			   root.mkdir();
-			  }
-			//删除之前的图片
 			File f = new File(Paths.get(ROOT, filename).toString());
 			if (f.exists()) {
 				f.delete();

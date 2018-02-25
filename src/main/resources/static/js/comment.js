@@ -13,6 +13,7 @@
 				$(commentElement.find(".author-name")).html(data.username);
 				$(commentElement.find(".comment-time")).html(data.date);
 				$(commentElement.find(".comment-content")).html(data.content);
+				$(commentElement.find(".avatar")).html(data.avatar);
 				$(".comment-list ul.list-unstyled").append(commentElement);
 			});
 		});

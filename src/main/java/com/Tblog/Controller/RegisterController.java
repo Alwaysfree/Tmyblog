@@ -32,25 +32,6 @@ public class RegisterController{
     	return "register";
     }
     
-    /*@PostMapping("/register")
-    @ResponseBody
-    public Map<String,Object> register (@RequestParam("email") String email,
-    		@RequestParam("username") String username,
-    		@RequestParam("password") String password,
-    		@RequestParam("repeatPassword") String repeatPassword){
-    	Map<String,Object> result = new HashMap<String,Object>();
-    	if(userRepository.findByEmail(email)!=null) {
-    		result.put("100", "邮箱已存在");
-    	}else if(userRepository.findByUsername(username)!=null) {
-    		result.put("101", "用户名已存在");
-    	}else if(password.length()<6) {
-    		result.put("102", "密码要大于6位");
-    	}else if(!password.equals(repeatPassword)){
-    		result.put("103", "密码不一致");
-    	}
-    	return result;
-    }*/
-    
    @PostMapping("/register")
     public String PostRegister(@ModelAttribute("user")@Valid UserRegisterForm form,BindingResult result,
     		HttpSession session,Model model) throws Exception {

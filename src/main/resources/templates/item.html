@@ -171,7 +171,8 @@
 					</div>
 					<ul class="list-unstyled">
 						<li class="clear-fix comment-item" th:each="comment: ${comments}">
-							<img alt="" src="/img/catty.jpeg" class="avatar pull-left"/>
+							<img alt="" th:src="${comment.commentUser.avatar} == null ? '/avatar/0.jpg' : '/avatar/'+${comment.commentUser.id}+'.jpg'"
+							class="avatar pull-left"/>
 							<p class="content" >
 							<a href="#" th:text="${comment.commentUser.username}">Harttle,</a>
 								<span class="text-muted date" th:text="${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm:ss')}">
@@ -185,7 +186,8 @@
 					
 					<ul class="hidden comment-template">
 						<li class="clearfix">
-						<img src="/img/catty.jpeg" alt="" class="avatar pull-left"/>
+						<img src="/avatar/0.jpg" 
+						alt="" class="avatar pull-left"/>
 							<p class="content">
 								<a href="#" class="author-name">Harttle</a> 
 								<span class="comment-time"> 2 mins ago</span> 

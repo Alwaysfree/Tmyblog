@@ -130,6 +130,7 @@ public class blogController {
 		  result.put("username", user.getUsername());
 		  result.put("date", df.format(now));
 		  result.put("content",str );
+		  result.put("avatar", user.getAvatar());
 		  return result;
 	}
 
@@ -150,17 +151,17 @@ public class blogController {
 			@Valid BlogForm updateBlogForm,HttpSession session, BindingResult result) throws Exception {
 		User user = (User) session.getAttribute("CURRENT_USER");
 		if (result.hasErrors()) {
-			model.addAttribute("operate", "create");
-			return "create";
+			model.addAttribute("operate", "update");
+			return "redirect:/blogs/create";
 		}
-		Blog b = blogRepository.findOne(id);
-		Tag tag = b.getTag();
+		Blog blog = blogRepository.findOne(id);
+		Tag tag = blog.getTag();
 		tag.setTagName(tagName);
 		tagService.updataTag(tag);
-		Blog blog = updateBlogForm.toBlog(user);
-		blog.setId(id);
-		blog.setTag(tag);
-		blogService.updateBlog(blog);
+		Blog b = updateBlogForm.toBlog(user);
+		blog.setTitle(b.getTitle());
+		blog.setContent(b.getContent());
+		blogService.updateBlog(b);
 		return "redirect:/blogs/" + id;
 	}
 

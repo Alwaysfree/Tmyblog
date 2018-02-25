@@ -112,7 +112,7 @@
 				</form>
 			</div>
 			<div class="col-sm-8" th:if="${operate}==update">
-				<form class="form-blog" th:action="@{/blogs/}+${id}" th:object="${blog}" method="put" enctype="application/x-www-form-urlencoded">
+				<form class="form-blog" th:action="@{/blogs/}+${id}" th:object="${blog}" method="put" enctype="application/x-www-form-urlencoded.">
 					<input type="hidden" name="_method" value="put"/>
 					<div class="form-group">
 						<label for="title">标题</label> 

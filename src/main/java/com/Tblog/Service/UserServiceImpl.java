@@ -48,8 +48,6 @@ public class UserServiceImpl implements UserService {
 	public User register(User user) throws Exception {
 		// MD5加密
 		try {
-			Date now = new Date();
-			user.setNow(now);
 			// Md5加盐加密
 			user.setPassword(StringUtil.encodeByMd5(user.getPassword()));
 			user.setStatus(0);// 0代表未激活，1代表已激活
