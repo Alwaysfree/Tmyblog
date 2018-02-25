@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>找回密码</title>
+<link rel="stylesheet" href="/css/account.css"/>
+<link rel="stylesheet" href="/css/footer.css"/>
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/templates/about.html">Tmyblog</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/login">登录</a></li>
+					<li><a href="/about">关于</a></li>
+				</ul>
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="搜索..."/>
+				</form>
+			</div>
+		</div>
+	</nav>
+	<form class="form-signin" method='post' th:action="@{/checkcode}">
+		<label class="control-label" for="inputGroupSuccess1">请输入验证信息</label>
+		<div th:text="*{errorMsg}"></div>
+		<div class="input-group">
+			<span class="input-group-addon">@</span> <input type="text"
+				class="form-control" id="inputGroupSuccess1"
+				aria-describedby="inputGroupSuccess1Status" required="" autofocus=""
+				name="email"/>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon"> <span
+				class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+			</span> <input type="text" class="form-control" id="inputGroupSuccess1"
+				aria-describedby="inputGroupSuccess1Status" name="checkCode"
+				required=""/> 
+				<span class="input-group-addon"> 
+					<img id="code" src="/images/imagecode" title="看不清点击刷新验证码"
+					style="cursor: pointer;" onclick="return refreshcode()" />
+			</span>
+		</div>
+		<div class="row">
+			<button type="submit"
+				class="btn btn-default col-md-4 col-md-offset-4">提交</button>
+		</div>
+	</form>
+	
+	
+	<script>
+	function refreshcode(){  
+        document.getElementById("code").src="/images/imagecode?a="+Math.random()+100;  
+        return true;  
+    }  
+	</script>
+</body>
+</html>

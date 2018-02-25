@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8"/>
+  <title>用户注册</title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/account.css"/>
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./list.html">Lorem 的博客</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/login">登录</a></li>
+        <li><a href="/about">关于</a></li>
+      </ul>
+      <form class="navbar-form navbar-right">
+        <input type="text" class="form-control" placeholder="搜索..."/>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<form class="form-signin" th:action="@{/register}" th:object="${user}" method='post'>
+	<div class="alert alert-info alert-dismissable flash" th:unless="${#strings.isEmpty(message)}" th:text="${message}">
+		<a class="panel-close close" data-dismiss="alert" aria-label="close">&times;</a> 
+			<strong></strong>
+	</div>
+  <h2 class="form-signin-heading">用户注册</h2>
+  <input type="email" id="email" class="form-control" placeholder="电子邮件" required="" autofocus="" th:field="*{email}"/>
+  <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email格式错误</p>
+  <input type="text" id="name" class="form-control" placeholder="用户名" required="" autofocus="" th:field="*{username}"/>
+  <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">用户名长度必须在6-30之间</p>
+  <input type="password" id="password" class="form-control" placeholder="输入密码" required="" th:field="*{password}"/>
+  <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">密码长度必须在6-30之间</p>
+  <button class="btn btn-primary btn-block" type="submit">确定</button>
+</form>
+</body>
+</html>

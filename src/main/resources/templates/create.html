@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+<meta charset="UTF-8"/>
+<title th:if="${operate}==create">创建博文</title>
+<title th:if="${operate}==update">修改博文</title>
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/css/footer.css"/>
+<link rel="stylesheet" href="/css/sidbar.css"/>
+<link rel="stylesheet" href="/css/blog.css"/>
+<link rel="stylesheet" href="/css/highlight.css"/>
+<link rel="stylesheet"
+	href="/lib/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"/>
+<link rel="stylesheet" href="/lib/tagify/jquery.tagify.css" />
+<script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/js/bootstrap3-wysihtml5.min.css"/>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand"><span
+					th:text="${user.username}"></span></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+				<li><img src="/vatar/0.jpg" th:src="${user.avatar} == null ? '/avatar/0.jpg' : '/avatar/'+${user.id}+'.jpg'"
+				style="width: 45px; height: 45px" class="avatar img-circle"/></li>
+				<li><a href="/home">博客首页</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">博文管理 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a th:href="@{'/'+${user.username}}">博文列表</a></li>
+							<li><a href="/blogs/create">创建博文</a></li>
+							<li><a href="/user/admin">博客管理</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">用户管理 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/profile">用户更新</a></li>
+							<li><a href="/findPassword">更改密码</a></li>
+							<li><a href="/logout">退出登录</a></li>
+						</ul>
+					</li>
+					<li><a href="#">个人中心</a></li>
+					
+				</ul>
+				<form class="navbar-form navbar-right" th:action="@{/search}" method='get'>
+				<button type="button" class="btn btn-default">
+					<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default">
+					<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+				</button>
+					<input type="text" class="form-control" placeholder="搜索..." name="keyword"/>
+					<button type="submit" class="btn btn-default">搜索</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="page-header" th:if="${operate}==create">
+			<h2>
+				创建博文 <small>在这里新建一篇博客</small>
+			</h2>
+		</div>
+
+		<div class="page-header" th:if="${operate}==update">
+			<h2>
+				修改博文 <small>在这里修改博客</small>
+			</h2>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-8" th:if="${operate}==create">
+				<form class="form-blog" th:action="@{/blogs}" th:object="${blog}"
+					method='post'>
+					<div class="form-group">
+						<label for="title">标题</label>
+						 <input type="text" name="title" th:field="*{title}" class="form-control" id="title"
+							placeholder="文章的标题" autofocus=""/>
+						<p class="alert alert-danger"
+							th:if="${#fields.hasErrors('title')}" th:errors="*{title}">标题长度必须在2-30之间</p>
+					</div>
+					<div class="form-group">
+						<label for="title">标签</label>
+						<p>
+							<input type="text" name="tag" class="form-control" id="tag"
+								placeholder="标签" autofocus=""/>
+						</p>
+					</div>
+					<div class="form-group">
+						<label for="content">内容</label>
+						<textarea class="form-control" name="content" th:field="*{content}"
+							id="content" placeholder="文章的内容" rows="18"></textarea>
+						<p class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">内容不可为空</p>
+					</div>
+					<button type="submit" class="btn pull-right btn-primary">保存</button>
+				</form>
+			</div>
+			<div class="col-sm-8" th:if="${operate}==update">
+				<form class="form-blog" th:action="@{/blogs/}+${id}" th:object="${blog}" method="put" enctype="application/x-www-form-urlencoded">
+					<input type="hidden" name="_method" value="put"/>
+					<div class="form-group">
+						<label for="title">标题</label> 
+						<input type="text" name="title"
+							th:field="*{title}" class="form-control" id="title"
+							placeholder="文章的标题" autofocus="" required=""/>
+						<p class="alert alert-danger"
+							th:if="${#fields.hasErrors('title')}" th:errors="*{title}">标题长度必须在2-30之间</p>
+					</div>
+					<div class="form-group">
+						<label for="title">标签</label>
+						<p>
+							<input type="text" name="tagName" class="form-control" id="tag" th:field="*{tag.tagName}"
+								placeholder="标签" autofocus="" required=""/>
+						</p>
+					</div>
+					<div class="form-group">
+						<label for="content">内容</label>
+						<textarea class="form-control" name="content" th:field="*{content}"
+							id="content" placeholder="文章的内容" rows="18" required=""></textarea>
+						<p class="alert alert-danger"
+							th:if="${#fields.hasErrors('content')}" th:errors="*{content}">内容不可为空</p>
+					</div>
+					<button type="submit" class="btn pull-right btn-primary">更新</button>
+				</form>
+			</div>
+			<div class="col-sm-3 col-sm-offset-1">
+				<div class="sidebar-module sidebar-module-inset">
+					<div class="avatar">
+						<img class="img-circle img-rounded img-thumbnail avatar"
+							th:src="${user.avatar} == null ? '/avatar/0.jpg' : '/avatar/'+${user.id}+'.jpg'"/>
+						<div>
+							<h4 th:text="${user.username}">Lorem</h4>
+							<a th:text="${user.email}">lorem@example.com</a>
+						</div>
+					</div>
+					<p th:text="${user.description}">Ornare sapien rhoncus, nec mi hendrerit. Ante aliquam dui
+						arcu, diam sodales erat felis dolor sed in, nec placerat non.</p>
+				</div>
+				<div class="sidebar-module">
+					<h4>归档</h4>
+					<div th:each="group:${Group}">
+					<ol class="list-unstyled">
+						<li><a href="#" th:text="${group[0]}+'年'+${group[1]}+'月'"></a></li>
+					</ol>
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+	<footer>
+		&copy; 2017-2018 SomeCompany, Org &middot; <a href="#">隐私</a> &middot; <a
+			href="#">条款</a>
+	</footer>
+<script src="/js/bootstrap3-wysihtml5.all.min.js"></script>
+  <script type="text/javascript">
+            $('#content').wysihtml5();
+          </script>
+</body>
+</html>

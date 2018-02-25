@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+<meta charset="UTF-8"/>
+<title>文章列表</title>
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/css/footer.css"/>
+<link rel="stylesheet" href="/css/blog.css"/>
+<link rel="stylesheet" href="/css/admin.css"/>
+<link rel="stylesheet" href="/css/highlight.css"/>
+<script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">
+				
+				<span th:text="${user.username}"></span></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+				<li><img th:src="${user.avatar} == null ? '/avatar/0.jpg' : '/avatar/'+${user.id}+'.jpg'"
+				style="width: 45px; height: 45px" class="avatar img-circle"/></li>
+				<li><a href="/home">博客首页</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">博文管理 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a th:href="@{'/'+${user.username}}">博文列表</a></li>
+							<li><a href="/blogs/create">创建博文</a></li>
+							<li><a href="/user/admin">博客管理</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">用户管理 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/profile">用户更新</a></li>
+							<li><a href="/findPassword">更改密码</a></li>
+							<li><a href="/logout">退出登录</a></li>
+						</ul>
+					</li>
+					<li><a href="#">个人中心</a></li>
+					
+				</ul>
+				<form class="navbar-form navbar-right" th:action="@{/search}" method='get'>
+				<button type="button" class="btn btn-default">
+					<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default">
+					<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+				</button>
+					<input type="text" class="form-control" placeholder="搜索..." name="keyword"/>
+					<button type="submit" class="btn btn-default">搜索</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="alert alert-success"
+			th:unless="${#strings.isEmpty(message)}">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong th:text="${message}"></strong>
+		</div>
+		<div style="margin-top: 10px">
+			<a href="/blogs/create" class="btn btn-primary blog-post-create-btn">创建新博客</a>
+		</div>
+		<div class="row">
+
+			<div class="table-responsive blog-post-list">
+				<table class="table table-striped blog-post-list-table">
+					<thead>
+						<tr>
+							<th>文章标题</th>
+							<th>创建时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody th:each="blog: ${blogs}">
+						<tr class="blog-post">
+							<td class="blog-post-title" th:text="${blog.title}">Velvolutpat
+								dictum sagittis lacus</td>
+							<td class="blog-post-create-date" th:text="${blog.createdTime}">2015年2月3日</td>
+							<td><a class="btn btn-primary blog-post-edit-btn edit"
+								th:href="@{'/blogs/' + ${blog.id}+'/edit'}">编辑</a>
+								<form class="blog-post-delete-form"
+									th:action="@{'/blogs/'+${blog.id}}" method="post" onsubmit="return confirm('确定要删除这篇文章吗？');">
+									<input type="hidden" name="_method" value="delete"/>
+									<button type="submit"
+										class="btn btn-danger blog-post-delete-btn delete" value="删除">删除
+									</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+	<nav>
+        <ul class="pager">
+          <li th:unless="${blogs.first}" class="previous"><a th:href="@{'/'+ ${user.name} + '?page=' + ${blogs.number - 1}}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+          <li th:unless="${blogs.last}" class="next"><a th:href="@{'/'+ ${user.name} + '?page=' + ${blogs.number + 1}}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </nav>
+
+		</div>
+	</div>
+	
+	<footer class="footer navbar-fixed-bottom ">
+	<div class="container">
+	&copy; 2017-2018 SomeCompany, Org &middot; <a href="#">隐私</a> &middot; <a
+			href="#">条款</a>
+    </div>	
+	</footer>
+</body>
+</html>
