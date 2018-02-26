@@ -1,4 +1,4 @@
-package com.Tblog.utils;
+/*package com.Tblog.utils;
 
 import java.io.*;
 import java.net.*;
@@ -149,4 +149,4 @@ public class SMTPMXLookup {
 		}
 		return false;
 	}
-}
+}*/

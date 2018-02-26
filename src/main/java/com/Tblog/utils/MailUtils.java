@@ -15,8 +15,14 @@ import org.springframework.stereotype.Component;
 public class MailUtils {
 	// 发送邮件的方法
 	public void sendMail(String to,String subtitle,String contents) throws Exception {
-		// 创建连接对象，链接到服务器
-		Properties prop = new Properties();
+		// 1.创建连接对象，连接到邮箱服务器
+        Properties prop = new Properties();
+        // 设置邮件服务器主机名
+        prop.setProperty("mail.host",  "tblog.com");
+		 // 发送邮件协议名称
+        prop.setProperty("mail.transport.protocol", "smtp");
+        // 发送服务器需要身份验证
+        prop.setProperty("mail.smtp.auth", "true");
 		Session session = Session.getInstance(prop, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
